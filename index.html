@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <style type="text/css">
+            body{
+                position: absolute;
+                top:0;
+                left: 0;
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                background: black;
+            }
+            .col{
+                float: left;
+                width: 20px;
+                min-height: 10px;
+                background: transparent;
+                color: #00FF00;
+                line-height: 10px;
+                text-align: center;
+            }
+            p{
+                /*word-wrap: break-word;*/
+            }
+
+        </style>
+
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            'use strict';
+
+            var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            possible += '??????????????????????????????????????????????????????????????????????????';
+            possible += '??????????????????????????????????????????????????????????????????????????';
+            var timeList = [10, 20, 30, 40, 50, 100, 200, 300, 400, 500, 600, 700, 800];
+            var maxColms = Math.floor($('body').width() / 20);
+
+            var getRandom = function(min, max){
+                return Math.floor(Math.random() * (max - min )) + min;
+            };
+
+            var initMatrix = function(value, item){
+                setInterval(function(){
+                    var random = getRandom(possible.length, 1);
+                    var nextChar = possible.charAt(random);
+                    if(nextChar === '?'){
+                        $('.matrix-'+value).prepend('<br>');
+
+                    } else {
+                        $('.matrix-'+value).prepend('<p>'+nextChar+'</p>');
+                    }
+                }, timeList[getRandom(timeList.length, 1)]);
+            };
+
+
+            // var initMatrix = function(position, titleLetter){
+            //         var nextChar = titleLetter;
+            //         if(nextChar === false) {
+            //             return true;
+            //         }
+            //         if(nextChar === ' '){
+            //             $('.matrix-'+position).append('<br>');
+
+            //         } else {
+            //             $('.matrix-'+position).append('<p>'+nextChar+'</p>');
+            //         }
+            // };
+
+            for(var i = 0; i < maxColms; i ++){
+                $('body').append('<div class="col matrix-'+ i +'">');
+                initMatrix(i);
+            }
+
+            $.ajax({
+                url: 'requestNews.php',
+                type: 'GET',
+            })
+            .done(function(response) {
+                var items = JSON.parse(response);
+
+
+                // $.each(items, function(mainIndex, item){
+                    // var letters = item.title.split('');
+                    // var letters = items[0].title.split('');
+
+                    // $.each(letters,function(index, letter){
+                    //     initMatrix(0, letter);
+                    // });
+
+                // });
+            })
+            .fail(function() {
+                // console.log("error");
+            })
+            .always(function() {
+                // console.log("complete");
+            });
+
+
+
+
+        </script>
+    </body>
+</html>
